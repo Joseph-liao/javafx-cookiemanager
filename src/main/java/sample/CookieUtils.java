@@ -48,6 +48,9 @@ public class CookieUtils {
     }
 
     public static void loadCookies() {
+        if (!Paths.get("cookies.json").toFile().exists()) {
+            return;
+        }
         try {
             byte[] bytes = Files.readAllBytes(Paths.get("cookies.json"));
             String json = new String(bytes, StandardCharsets.UTF_8);

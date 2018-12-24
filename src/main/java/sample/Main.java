@@ -3,6 +3,7 @@ package sample;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.sun.webkit.dom.HTMLButtonElementImpl;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -12,7 +13,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import org.w3c.dom.html.HTMLInputElement;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -49,7 +49,7 @@ public class Main extends Application {
         loadCredentials();
         CookieUtils.loadCookies();
         webEngine.getLoadWorker().stateProperty().addListener(changeListener);
-        webEngine.load("https://gmail.com/");
+        webEngine.load("https://www.oschina.net/");
     }
 
     private ChangeListener<Worker.State> changeListener = new ChangeListener<Worker.State>() {
@@ -59,15 +59,11 @@ public class Main extends Application {
             if (newValue != Worker.State.SUCCEEDED) {
                 return;
             }
-            if (webEngine.getLocation().startsWith("https://accounts.google.com/ServiceLogin")) {
-                webEngine.getDocument().getElementById("Email").setAttribute("value", login);
-                ((HTMLInputElement) webEngine.getDocument().getElementById("next")).click();
+            if (webEngine.getLocation().startsWith("https://www.oschina.net/home/login")) {
+                webEngine.getDocument().getElementById("userMail").setAttribute("value", login);
+                webEngine.getDocument().getElementById("userPassword").setAttribute("value", password);
             }
-            if (webEngine.getLocation().startsWith("https://accounts.google.com/signin/challenge/pwd/")) {
-                webEngine.getDocument().getElementById("password").setAttribute("value", password);
-                ((HTMLInputElement) webEngine.getDocument().getElementById("submit")).click();
-            }
-            if (webEngine.getLocation().startsWith("https://mail.google.com/mail/")) {
+            if (webEngine.getLocation().startsWith("https://www.oschina.net/?nocache")) {
                 CookieUtils.saveCookies();
             }
         }
